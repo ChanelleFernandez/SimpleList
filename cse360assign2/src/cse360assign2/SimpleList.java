@@ -3,8 +3,8 @@ package cse360assign2;
 /**
  * @author Chanelle Fernandez
  * Class ID: 332
- * Assignment #: 1
- * Contains the class "SimpleList" which adds, removes, and searches an int array.
+ * Assignment #: 2
+ * Contains the class "SimpleList" which adds, removes, searches, and finds elements of an int array.
  */
 
 public class SimpleList {
@@ -29,18 +29,33 @@ public class SimpleList {
 	 */
 	public void add(int newNumber) {
 		
+		if(count == list.length) {
+			int[] temp = new int[(int) (list.length + (list.length * .5))];
+			
+			for(int index = 0; index < list.length; index++) {
+				temp[index] = list[index];
+			}
+
+			list = new int[temp.length];
+			
+			for(int index = 0; index < list.length; index++) {
+				list[index] = temp[index];
+			}
+		}
+
 		if(count == 0) {
 			list[0] = newNumber;
 			count++;
 		}
 		
-		else if(count > 0 && count < 10) {
+		else if(count > 0 && count < list.length) {
 			for(int index = count; index > 0; index--) {
 				list[index] = list[index - 1];
 			}
+			
 			list[0] = newNumber;
 			
-			if(count != 10) {
+			if(count != list.length) {
 				count++;
 			}
 		}	
@@ -58,12 +73,25 @@ public class SimpleList {
 			
 			if(list[index] == numberToRemove) {
 				
-				while(index < count) {
+				while(index < count - 1) {
 					list[index] = list[index + 1];
 					index++;
 				}
-
 				count--;
+			}
+		}
+		
+		if(count < ((int)(list.length * .75 )) && list.length != 1) {
+			int temp[] = new int[(int)(list.length * .75)];
+			
+			for(int index = 0; index < temp.length; index++) {
+				temp[index] = list[index];
+			}
+			
+			list = new int[(int)(list.length * .75)];
+			
+			for(int index = 0; index < list.length; index++) {
+				list[index] = temp[index];
 			}
 		}
 	}
@@ -110,5 +138,65 @@ public class SimpleList {
 		
 		return indexOfNum;
 	}
-}
+	
+	/**
+	 * Appends the parameter to the end of the list
+	 * 
+	 * @param newNum number that is being appended
+	 */
+	public void append(int newNum) {
+		if(count == list.length) {
+			int[] temp = new int[(int) (list.length + (list.length * .5))];
+			
+			for(int index = 0; index < list.length; index++) {
+				temp[index] = list[index];
+			}
 
+			list = new int[temp.length];
+			
+			for(int index = 0; index < list.length; index++) {
+				list[index] = temp[index];
+			}
+		}
+		
+		list[count] = newNum;
+		count++;
+	}
+	
+	/**
+	 * Returns the first element of the list. 
+	 * 
+	 * @return			the first element of the list. If no elements, return -1
+	 */
+	public int first() {
+		int firstNum = -1;
+		
+		if(count != 0) {
+			firstNum = list[0];
+		}
+		
+		return firstNum;
+	}
+	
+	/**
+	 * Returns the last element of the list.
+	 * 
+	 * @return			returns the last element of the list. If no elements, return -1;
+	 */
+	public int last() {
+		int lastNum = -1;
+		if(count != 0) {
+			lastNum = list[count-1];
+		}
+		
+		return lastNum;
+	}
+	
+	/**
+	 * Returns the correct number of possible locations in the list.
+	 * @return			returns list.length
+	 */
+	public int size() {
+		return list.length;
+	}
+}
